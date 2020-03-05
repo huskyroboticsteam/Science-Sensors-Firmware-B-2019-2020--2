@@ -20,8 +20,8 @@
 
 //FUNCTION DEFINES
 void BME280ReadAllData();
-void iAQReadAll();
-void VEML6070ReadAll();
+void iAQCoreReadAll(uint16_t *final[]);
+uint16_t VEML6070ReadAll();
 void delay(uint8 milliseconds);
 int32 t_fine;
 void user_delay_ms(uint32_t period);
@@ -29,30 +29,28 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint1
 int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 void print_sensor_data(struct bme280_data *comp_data);
 void multiRegisterI2CRead(uint8_t device, uint8_t reg[], uint8_t *data[]);
-
+uint8_t initializeBME280(struct bme280_dev* dev);
+uint8_t AS7265xReadReg(uint8_t reg);
+void AS7265ReadAll(uint8_t *data[]);
 
 int main(void)
 {
     CyGlobalIntEnable; /* Enable global interrupts. */ 
     I2CMaster_Start();
     
-    //Initialize BME280
+    //////////////////Initialize BME280/////////////////////
     struct bme280_dev dev;
     int8_t rslt = BME280_OK;
+    rslt = initializeBME280(&dev);
     
-    dev.dev_id = BME280_I2C_ADDR_PRIM;
-    dev.intf = BME280_I2C_INTF;
-    dev.read = user_i2c_read;
-    dev.write = user_i2c_write;
-    dev.delay_ms = user_delay_ms;
-    rslt = bme280_init(&dev);
     
     //Initialize VEML6070
     I2CMaster_I2CMasterSendStart(I2C_VEML6070_CMD, I2C_WRITE, 1);
     I2CMaster_I2CMasterWriteByte(I2C_VEML6070_INITIALIZATION_VALUES, 1);
     I2CMaster_I2CMasterSendStop(10);
     
-    
+    PWM_Enable();
+    PWM_Start();
     
     
     for(;;)
@@ -76,31 +74,94 @@ int main(void)
 }
 
 
+uint8_t initializeBME280(struct bme280_dev* dev){
+    dev->dev_id = BME280_I2C_ADDR_PRIM;
+    dev->intf = BME280_I2C_INTF;
+    dev->read = user_i2c_read;
+    dev->write = user_i2c_write;
+    dev->delay_ms = user_delay_ms;
+    struct bme280_settings settings;
+    settings.osr_h = BME280_OVERSAMPLING_1X;
+	settings.osr_p = BME280_OVERSAMPLING_16X;
+	settings.osr_t = BME280_OVERSAMPLING_2X;
+	settings.filter = BME280_FILTER_COEFF_16;
+	settings.standby_time = BME280_STANDBY_TIME_62_5_MS;
+    dev->settings = settings;
+    return bme280_init(&dev);
+}
+
+
 //get all data
+void collectAll(uint32_t* data[], struct bme280_dev *dev);
+void collectAll(uint32_t* data[], struct bme280_dev *dev)
+{
+    //bme280
+	uint8_t rslt;
+    uint8_t settings_sel;
+    struct bme280_data comp_data;
+    
+    settings_sel = BME280_OSR_PRESS_SEL;
+	settings_sel |= BME280_OSR_TEMP_SEL;
+	settings_sel |= BME280_OSR_HUM_SEL;
+	settings_sel |= BME280_STANDBY_SEL;
+	settings_sel |= BME280_FILTER_SEL;
+	rslt = bme280_set_sensor_settings(settings_sel, dev);
+	rslt = bme280_set_sensor_mode(BME280_NORMAL_MODE, dev);
+	rslt = bme280_set_sensor_settings(settings_sel, dev);
+	rslt = bme280_set_sensor_mode(BME280_NORMAL_MODE, dev);
+    
+	rslt = bme280_get_sensor_data(BME280_ALL, &comp_data, dev);
+    dev->delay_ms(70);
+    //comp_data pointers have the data
+    *data[0] = comp_data.humidity;
+    *data[1] = comp_data.pressure;
+    *data[2] = comp_data.temperature;
+    
+    //iAQCore
+    uint16_t dat[2];
+    iAQCoreReadAll(&dat);
+    *data[3] = dat[0];
+    *data[4] = dat[1];
+    
+    //veml6070
+    //uint16_t uv = VEML6070ReadAll();
+    *data[5] = VEML6070ReadAll();
+    
+    //AS7265x
+    uint8_t spec[5];
+    AS7265ReadAll(&spec);
+}
+
 //get each sensor data
 
 
-void iAQCoreReadAll();
-void iAQCoreReadAll(){
+
+void iAQCoreReadAll(uint16_t *final[]){
     uint8_t regs[9];
     uint8_t data[9];
     for(uint8_t i = 0; i < 9; i++){
         regs[i] = 0xB5 + i;
     }
     
-    multiRegisterI2CRead(I2C_AIRQUALITY_ADDRESS, regs, &data);
+    multiRegisterI2CRead(I2C_AIRQUALITY_ADDRESS, regs, *data);
     
     uint16_t co2 = (data[0] << 8) + (data[1]);
     uint16_t tvoc = (data[7] << 8) + data[8];
+    
+    *final[0] = co2;
+    *final[1] = tvoc;
 }
 
 
 
 
-void VEML6070ReadAll(){//edit
+uint16_t VEML6070ReadAll(){//edit
     uint8 msb, lsb;
     uint32 error;
     
+//    if(I2CMaster_I2CMasterStatus() != I2CMaster_I2C_MSTR_NO_ERROR){
+//        I2CMaster_I2CMasterClearStatus();
+//    }
     I2CMaster_I2CMasterSendStart(I2C_VEML6070_UVDATA_MSB, I2C_READ, 1);
     I2CMaster_I2CMasterReadByte(I2CMaster_I2C_NAK_DATA, &msb, 100);
     I2CMaster_I2CMasterSendStop(1);
@@ -109,7 +170,7 @@ void VEML6070ReadAll(){//edit
     I2CMaster_I2CMasterReadByte(I2CMaster_I2C_NAK_DATA, &lsb, 100);
     I2CMaster_I2CMasterSendStop(1);
     
-    uint16 uv = ((msb << 8) + (lsb));        
+    return ((msb << 8) + (lsb));
 }
 
 void AS7265xWrite(uint8_t reg, uint8_t data);
@@ -153,9 +214,19 @@ void AS7265xWrite(uint8_t reg, uint8_t data){
 }
 
 
+void AS7265ReadAll(uint8_t *data[]){
+    uint8_t regs[5];
+    
+    //populate regs based on desired readings
+    
+    for(uint8_t i = 0; i < (sizeof(regs)/sizeof(regs[0])); i++){
+        data[i] = AS7265xReadReg(regs[i]);
+    }
+}
 
-uint8_t AS7265xRead(uint8_t reg);
-uint8_t AS7265xRead(uint8_t reg){
+
+
+uint8_t AS7265xReadReg(uint8_t reg){
     uint8_t status;
     uint8_t reading;
     
@@ -172,11 +243,9 @@ uint8_t AS7265xRead(uint8_t reg){
         }
     }
     
-    
     I2CMaster_I2CMasterSendRestart(I2C_SPECTRO_WRITE_ADDR, I2C_WRITE, 1);
     I2CMaster_I2CMasterWriteByte(I2C_SPECTRO_SLAVE_WRITE_REG, 1);
     I2CMaster_I2CMasterWriteByte(reg, 1);
-    
     
     I2CMaster_I2CMasterSendRestart(I2C_SPECTRO_WRITE_ADDR, I2C_WRITE, 1);
     I2CMaster_I2CMasterWriteByte(I2C_SPECTRO_SLAVE_STATUS_REG, 1);
@@ -198,22 +267,6 @@ uint8_t AS7265xRead(uint8_t reg){
 }
 
 
-
-void iAQReadAll(){
-    uint8 buffer [AIRQUALITY_BUFFER_LENGTH];
-    int32 error;
-    I2CMaster_I2CMasterSendStart(I2C_AIRQUALITY_ADDRESS, I2C_READ, 1);
-    
-    for(uint8 i = 0; i < AIRQUALITY_BUFFER_LENGTH; i++){
-        if(i != AIRQUALITY_BUFFER_LENGTH - 1){
-            error = I2CMaster_I2CMasterReadByte(I2CMaster_I2C_ACK_DATA, &(buffer[i]), 1);
-        }
-        else{
-            error = I2CMaster_I2CMasterReadByte(I2CMaster_I2C_NAK_DATA, &(buffer[i]), 1);
-        }
-    }
-    I2CMaster_I2CMasterSendStop(1);
-}
 
 
 
