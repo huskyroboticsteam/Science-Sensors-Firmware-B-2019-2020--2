@@ -1,31 +1,79 @@
---------------- Build Started: 02/01/2020 14:45:14 Project: ScienceFirmware, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
-The code generation step is up to date.
+--------------- Build Started: 03/01/2020 20:03:03 Project: ScienceFirmware, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+cydsfit.exe -.appdatapath "C:\Users\simon\AppData\Local\Cypress Semiconductor\PSoC Creator\4.2" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p "D:\OneDrive\Documents\Husky Robotics\HR19-20\Electronics\PSoC Projects\Science Board\ScienceFirmware.cydsn\ScienceFirmware.cyprj" -d CY8C4245AXI-M445 -s "D:\OneDrive\Documents\Husky Robotics\HR19-20\Electronics\PSoC Projects\Science Board\ScienceFirmware.cydsn\Generated_Source\PSoC4" -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Elaborating Design...
+HDL Generation...
+Synthesis...
+Tech Mapping...
+ADD: pft.M0040: information: The following 1 pin(s) will be assigned a location by the fitter: LED(0)
+Analog Placement...
+Analog Routing...
+Analog Code Generation...
+Digital Placement...
+Digital Routing...
+Bitstream Generation...
+Bitstream Verification...
+Static timing analysis...
+API Generation...
+Dependency Generation...
+Cleanup...
 arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM0\ARM_GCC_541\Debug\main.o
 main.c: In function 'main':
-main.c:40:12: warning: passing argument 1 of 'printf' makes pointer from integer without a cast [-Wint-conversion]
-     printf(c);
+main.c:41:12: warning: variable 'rslt' set but not used [-Wunused-but-set-variable]
+     int8_t rslt = BME280_OK;
             ^
-In file included from d:\program files (x86)\cypress\psoc creator\4.2\psoc creator\import\gnu\arm\5.4.1\arm-none-eabi\include\string.h:10:0,
-                 from Generated_Source\PSoC4/CyLib.h:25,
-                 from Generated_Source\PSoC4/I2CMaster.h:24,
-                 from Generated_Source\PSoC4/project.h:21,
-                 from main.c:4:
-d:\program files (x86)\cypress\psoc creator\4.2\psoc creator\import\gnu\arm\5.4.1\arm-none-eabi\include\stdio.h:187:5: note: expected 'const char * restrict' but argument is of type 'uint16 {aka short unsigned int}'
- int _EXFUN(printf, (const char *__restrict, ...)
-     ^
+main.c: In function 'iAQCoreReadAll':
+main.c:95:56: warning: passing argument 3 of 'multiRegisterI2CRead' from incompatible pointer type [-Wincompatible-pointer-types]
+     multiRegisterI2CRead(I2C_AIRQUALITY_ADDRESS, regs, &data);
+                                                        ^
+main.c:31:6: note: expected 'uint8_t ** {aka unsigned char **}' but argument is of type 'uint8_t (*)[9] {aka unsigned char (*)[9]}'
+ void multiRegisterI2CRead(uint8_t device, uint8_t reg[], uint8_t *data[]);
+      ^
+main.c:98:14: warning: unused variable 'tvoc' [-Wunused-variable]
+     uint16_t tvoc = (data[7] << 8) + data[8];
+              ^
+main.c:97:14: warning: unused variable 'co2' [-Wunused-variable]
+     uint16_t co2 = (data[0] << 8) + (data[1]);
+              ^
 main.c: In function 'VEML6070ReadAll':
-main.c:64:12: warning: unused variable 'error' [-Wunused-variable]
+main.c:116:12: warning: unused variable 'uv' [-Wunused-variable]
+     uint16 uv = ((msb << 8) + (lsb));        
+            ^
+main.c:106:12: warning: unused variable 'error' [-Wunused-variable]
      uint32 error;
             ^
 main.c: In function 'iAQReadAll':
-main.c:79:11: warning: variable 'error' set but not used [-Wunused-but-set-variable]
+main.c:208:11: warning: variable 'error' set but not used [-Wunused-but-set-variable]
      int32 error;
            ^
-main.c: In function 'bme280ReadAll':
-main.c:96:11: warning: variable 'error' set but not used [-Wunused-but-set-variable]
-     int32 error;
-           ^
-arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.a .\CortexM0\ARM_GCC_541\Debug\CyFlash.o .\CortexM0\ARM_GCC_541\Debug\CyLib.o .\CortexM0\ARM_GCC_541\Debug\cyPm.o .\CortexM0\ARM_GCC_541\Debug\cyutils.o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o .\CortexM0\ARM_GCC_541\Debug\cy_em_eeprom.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_INT.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_BOOT.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_MASTER.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_PM.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_BOOT.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_SCBCLK.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_sda.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_sda_PM.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_scl.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_scl_PM.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_SCB_IRQ.o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cyfitter_cfg.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cyfitter_cfg.c -o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/Cm0Start.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\Cm0Start.c -o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyFlash.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyFlash.c -o .\CortexM0\ARM_GCC_541\Debug\CyFlash.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyLib.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyLib.c -o .\CortexM0\ARM_GCC_541\Debug\CyLib.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cyPm.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cyPm.c -o .\CortexM0\ARM_GCC_541\Debug\cyPm.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cyutils.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cyutils.c -o .\CortexM0\ARM_GCC_541\Debug\cyutils.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyDMA.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyDMA.c -o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyLFClk.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyLFClk.c -o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cy_em_eeprom.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cy_em_eeprom.c -o .\CortexM0\ARM_GCC_541\Debug\cy_em_eeprom.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_I2C_INT.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_I2C_INT.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_INT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_I2C.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_I2C.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_I2C_BOOT.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_I2C_BOOT.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_BOOT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_I2C_MASTER.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_I2C_MASTER.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_MASTER.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_PM.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_BOOT.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_BOOT.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_BOOT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_SCBCLK.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_SCBCLK.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_SCBCLK.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_sda.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_sda.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_sda.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_sda_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_sda_PM.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_sda_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_scl.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_scl.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_scl.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_scl_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_scl_PM.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_scl_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/I2CMaster_SCB_IRQ.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\I2CMaster_SCB_IRQ.c -o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_SCB_IRQ.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/Clock.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\Clock.c -o .\CortexM0\ARM_GCC_541\Debug\Clock.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/PWM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\PWM.c -o .\CortexM0\ARM_GCC_541\Debug\PWM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/PWM_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\PWM_PM.c -o .\CortexM0\ARM_GCC_541\Debug\PWM_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/LED.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\LED.c -o .\CortexM0\ARM_GCC_541\Debug\LED.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/LED_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\LED_PM.c -o .\CortexM0\ARM_GCC_541\Debug\LED_PM.o
+arm-none-eabi-as.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -alh=.\CortexM0\ARM_GCC_541\Debug/CyBootAsmGnu.lst -g -W -o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o Generated_Source\PSoC4\CyBootAsmGnu.s
+arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.a .\CortexM0\ARM_GCC_541\Debug\CyFlash.o .\CortexM0\ARM_GCC_541\Debug\CyLib.o .\CortexM0\ARM_GCC_541\Debug\cyPm.o .\CortexM0\ARM_GCC_541\Debug\cyutils.o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o .\CortexM0\ARM_GCC_541\Debug\cy_em_eeprom.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_INT.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_BOOT.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_I2C_MASTER.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_PM.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_BOOT.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_SCBCLK.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_sda.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_sda_PM.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_scl.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_scl_PM.o .\CortexM0\ARM_GCC_541\Debug\I2CMaster_SCB_IRQ.o .\CortexM0\ARM_GCC_541\Debug\Clock.o .\CortexM0\ARM_GCC_541\Debug\PWM.o .\CortexM0\ARM_GCC_541\Debug\PWM_PM.o .\CortexM0\ARM_GCC_541\Debug\LED.o .\CortexM0\ARM_GCC_541\Debug\LED_PM.o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o
 arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.a
 arm-none-eabi-gcc.exe -Wl,--start-group -o "D:\OneDrive\Documents\Husky Robotics\HR19-20\Electronics\PSoC Projects\Science Board\ScienceFirmware.cydsn\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.elf" .\CortexM0\ARM_GCC_541\Debug\main.o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o .\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.a -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Debug/ScienceFirmware.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -Og -ffat-lto-objects -Wl,--end-group
 cyelftool.exe -C "D:\OneDrive\Documents\Husky Robotics\HR19-20\Electronics\PSoC Projects\Science Board\ScienceFirmware.cydsn\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.elf" --flash_row_size 128 --flash_size 32768 --flash_offset 0x00000000
@@ -33,6 +81,6 @@ No ELF section .cychecksum found, creating one
 Application checksum calculated and stored in ELF section .cychecksum
 Checksum calculated and stored in ELF section .cymeta
 cyelftool.exe -S "D:\OneDrive\Documents\Husky Robotics\HR19-20\Electronics\PSoC Projects\Science Board\ScienceFirmware.cydsn\CortexM0\ARM_GCC_541\Debug\ScienceFirmware.elf"
-Flash used: 6264 of 32768 bytes (19.1%).
-SRAM used: 2584 of 4096 bytes (63.1%). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 02/01/2020 14:45:19 ---------------
+Flash used: 5888 of 32768 bytes (18.0%).
+SRAM used: 2624 of 4096 bytes (64.1%). Stack: 2048 bytes. Heap: 128 bytes.
+--------------- Build Succeeded: 03/01/2020 20:03:27 ---------------

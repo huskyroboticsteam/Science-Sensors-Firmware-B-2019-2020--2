@@ -3,7 +3,8 @@
 #define I2C_AIRQUALITY_ADDRESS          0x5A    //iAQ-core
 #define I2C_UVSENSOR_ADDRESS_BYTE1      0x71    //VEML6070
 #define I2C_UVSENSOR_ADDRESS_BYTE2      0x73    //VEML6070
-#define I2C_SPECTROSCOPY_ADDRESS        0x49    //AS7265x
+#define I2C_SPECTRO_READ_ADDR           0x93    //AS7265x
+#define I2C_SPECTRO_WRITE_ADDR          0x92    //AS7265x
 
 //Weatherclick I2C data on pages 31 and 32 of datasheet
 //Register information starts on page 25 of datasheet
@@ -37,11 +38,13 @@
 #define AIRQUALITY_BUFFER_LENGTH    9u
 
 
-#define I2C_UVSENSOR_UVDATA_LSB         0x71    //second 8 bits of total 16 bit data
-#define I2C_UVSENSOR_UVDATA_MSB         0x73    //first 8 bits of total 16 bit data
-#define I2C_UVSENSOR_ARA                0x18    //used to check if an action can occur or not
+#define I2C_VEML6070_UVDATA_LSB             0x71    //second 8 bits of total 16 bit data
+#define I2C_VEML6070_UVDATA_MSB             0x73    //first 8 bits of total 16 bit data
+#define I2C_VEML6070_ARA                    0x18    //used to check if an action can occur or not
                                                 //check VEML6070 datasheet page 7 for details
-#define UVSENSOR_BUFFER_LENGTH          1
+#define I2C_VEML6070_CMD                    0x70
+#define I2C_VEML6070_INITIALIZATION_VALUES  0x06
+#define UVSENSOR_BUFFER_LENGTH              1
                                                 
 
 #define I2C_SPECTRO_SLAVE_STATUS_REG    0x00
