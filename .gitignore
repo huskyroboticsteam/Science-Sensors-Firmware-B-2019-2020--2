@@ -10,3 +10,13 @@
 *.cydsn/codegentemp        
 *.cydsn/DP8051        
 *.cydsn/Generated_Source
+*.o
+*.svd
+*.log
+*.xml
+*.cywrk
+*.cydwr
+*.cyprj
+*.cysch
+*.cymacro
+Debug/
